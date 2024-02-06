@@ -7,15 +7,11 @@ public:
         
         unordered_map<string, vector<string>> stringVsList;
         
-        vector<string> dummyStrs = strs;
-        
-        for(int i=0;i<n;i++) {
-            sort(dummyStrs[i].begin(),dummyStrs[i].end());
-        }
-        
         for(int i=0;i<n;i++) {
             // cout<<dummyStrs[i]<<" ";
-            stringVsList[dummyStrs[i]].push_back(strs[i]);
+            string s = strs[i];
+            sort(s.begin(),s.end());
+            stringVsList[s].push_back(strs[i]);
         }
         
         for(auto it : stringVsList ) {

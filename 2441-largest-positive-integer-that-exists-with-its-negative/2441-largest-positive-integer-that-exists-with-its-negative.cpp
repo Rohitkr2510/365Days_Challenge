@@ -1,18 +1,19 @@
 class Solution {
 public:
     int findMaxK(vector<int>& nums) {
-        int maxi = -1;
-        int n = nums.size();
-        
-        for(int i=0;i<n;i++) {
-            for(int j = i+1;j<n;j++) {
-                if(nums[i] + nums[j] == 0 && abs(nums[i])>maxi) {
-                    maxi = abs(nums[i]);
-                }
-            }
+        int ans = -1;
+
+        // Set to store seen elements
+        unordered_set<int> seen; 
+
+        for (int num : nums) { 
+            const int abs_num = abs(num);
+
+            // If the absolute value is greater than current max and its negation is in the set
+            if (abs_num > ans && seen.contains(-num)) 
+                ans = abs_num;
+            seen.insert(num); // Insert current element into the set
         }
-        
-        return maxi;
-        
+        return ans; 
     }
 };

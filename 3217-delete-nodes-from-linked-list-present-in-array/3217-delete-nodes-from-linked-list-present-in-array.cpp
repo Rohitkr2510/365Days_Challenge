@@ -1,37 +1,38 @@
 class Solution {
 public:
     ListNode* modifiedList(vector<int>& nums, ListNode* head) {
-        // Create an unordered_set for efficient lookup of values in nums
-        unordered_set<int> valuesToRemove(nums.begin(), nums.end());
+        // Convert the array `nums` into a set for fast lookup of values to be removed.
+        set<int> st(nums.begin(), nums.end());
 
-        // Handle the case where the head node needs to be removed
-        while (head != nullptr && valuesToRemove.count(head->val) > 0) {
-            ListNode* temp = head;
-            head = head->next;
-            delete temp;
+        // Initialize a pointer `curr` to traverse the linked list.
+        ListNode* curr = head;
+        
+        // Traverse the list to find the first node whose value is NOT in the set.
+        // This node will be the new head of the modified linked list.
+        while(curr) {
+            if(st.count(curr->val)) { 
+                // If the current node's value is in the set, skip this node.
+                curr = curr->next;
+            }
+            else break; // Stop when we find a node whose value is NOT in the set.
         }
 
-        // If the list is empty after removing head nodes, return nullptr
-        if (head == nullptr) {
-            return nullptr;
-        }
+        // The first valid node becomes the new head of the modified list.
+        ListNode* newHead = curr;
 
-        // Iterate through the list, removing nodes with values in the set
-        ListNode* current = head;
-        while (current->next != nullptr) {
-            if (valuesToRemove.contains(current->next->val)) {
-                // Store the node to be deleted
-                ListNode* temp = current->next;
-                // Skip the next node by updating the pointer
-                current->next = current->next->next;
-                // Delete the removed node
-                delete temp;
-            } else {
-                // Move to the next node
-                current = current->next;
+        // Traverse the rest of the linked list and remove nodes whose values exist in the set.
+        while(curr && curr->next) { 
+            if(st.count(curr->next->val)) {
+                // If the next node's value is in the set, skip the next node by adjusting pointers.
+                curr->next = curr->next->next;
+            } 
+            else {
+                // Move to the next node if it's not in the set.
+                curr = curr->next;
             }
         }
 
-        return head;
+        // Return the new head of the modified linked list.
+        return newHead;
     }
 };
